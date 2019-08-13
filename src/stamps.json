@@ -1,0 +1,51 @@
+[
+  {
+    "id": "greatwall",
+    "name": "Great Wall of China",
+    "picture": "https://www.wonders-of-the-world.net/Seven/images/Vignettes/Modernes/Grande-muraille-de-Chine-V.jpg",
+    "location": "Beijing, China",
+    "price": 5
+  },
+  {
+    "id": "petra",
+    "name": "City of Petra",
+    "picture": "https://www.wonders-of-the-world.net/Seven/images/Vignettes/Modernes/Petra-V.jpg",
+    "location": "Petra, Jordan",
+    "price": 7
+  },
+  {
+    "id": "christ",
+    "name": "Christ the Redeemer",
+    "picture": "https://www.wonders-of-the-world.net/Seven/images/Vignettes/Modernes/Christ-redempteur-V.jpg",
+    "location": "Rio-de-Janeiro, Brazil",
+    "price": 10
+  },
+  {
+    "id": "machupicchu",
+    "name": "The Machu Picchu",
+    "picture": "https://www.wonders-of-the-world.net/Seven/images/Vignettes/Modernes/Machu-Picchu-V.jpg",
+    "location": "Cuzco, Peru",
+    "price": 8
+  },
+  {
+    "id": "chichenitza",
+    "name": "Chichen Itza",
+    "picture": "https://www.wonders-of-the-world.net/Seven/images/Vignettes/Modernes/Chichen-Itza-V.jpg",
+    "location": "Valladolid, Mexico",
+    "price": 6
+  },
+  {
+    "id": "colosseum",
+    "name": "The Colosseum",
+    "picture": "https://www.wonders-of-the-world.net/Seven/images/Vignettes/Modernes/Colisee-de-Rome-V.jpg",
+    "location": "Rome, Italy",
+    "price": 9
+  },
+  {
+    "id": "tajmahal",
+    "name": "Taj Mahal",
+    "picture": "https://www.wonders-of-the-world.net/Seven/images/Vignettes/Modernes/Taj-Mahal-V.jpg",
+    "location": "Agra, India",
+    "price": 10
+  }
+]

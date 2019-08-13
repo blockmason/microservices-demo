@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>7 Wonders of the Modern World Collectible Stamps</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styling -->
+    <link href="css/style.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-push-2">
+          <h1 class="text-center">Collectible Digital Paintings</h1>
+          <hr/>
+          <h2 class="text-center">7 Wonders of the Modern World</h2>
+          <br/>
+        </div>
+      </div>
+
+      <div id="stampsRow" class="row">
+        <!-- STAMPS LOAD HERE -->
+      </div>
+    </div>
+
+    <div id="stampTemplate" style="display: none;">
+      <div class="col-sm-6 col-md-4 col-lg-3">
+        <div class="panel panel-default panel-stamp">
+          <div class="panel-heading">
+            <h3 class="panel-title">Landmark</h3>
+          </div>
+          <div class="panel-body">
+            <img alt="140x140" data-src="holder.js/140x140" class="img-rounded img-center" style="width: 100%;" src="" data-holder-rendered="true">
+            <br/><br/>
+            <strong>Location:</strong>: <span class="stamp-location">Add location</span>
+            <br><br/>
+            <div class="owner-address">
+              <input type="text" class="form-control" name="owner" placeholder="Enter ownership address">
+              <button class="btn btn-primary btn-own" type="button" data-id="default">Own</button>
+
+              <!-- Following is for the multi-chain exercise:  -->
+              <button class="btn btn-default btn-value" type="button" disabled="disabled">100</button>
+              <div style='display: inline;'>ASSET Tokens</div>
+              <br><br/>
+            </div>
+            <!-- Uncomment for Comments Feature Demo -->
+            <!-- <div class="message-area">
+              <textarea class="form-control" id="textarea" rows="3"></textarea>
+              <button class="btn btn-info btn-comment" type="button" id="submitMessage">Comment</button>
+            </div>
+            <hr>
+            <div id="commentsRow" class="row"> -->
+              <!-- COMMENTS LOAD HERE -->
+            <!-- </div> -->
+          </div>
+          <div class="panel-footer">
+            <p id=ownerAddress></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/app-complete.js"></script>
+
+  </body>
+</html>

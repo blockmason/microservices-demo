@@ -1,0 +1,18 @@
+{
+  "name": "simple-ownership-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel serve --https src/index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@blockmason/link-sdk": "^0.1.4",
+    "dotenv": "^8.0.0",
+    "parcel-bundler": "^1.12.3"
+  }
+}
