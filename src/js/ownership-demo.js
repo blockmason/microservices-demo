@@ -4,8 +4,8 @@ const { link } = require('@blockmason/link-sdk');
 
 // Link credentials
 const project = link({
-  clientId: 'q6q5mBcTl-Xv-Lp3o2nEOmJs8G8G677ZQLPcF1ZT5XI',
-  clientSecret: 'm/IHjaB0JcvuDOzpLgHLpzHzLhhrhmsJffjlBiM25KRt+z3WJ3d9n9CGAn+BaIl'
+  clientId: '',
+  clientSecret: ''
 }, {
     fetch
 });

@@ -1,61 +1,28 @@
 //Link user: harish+microservices@blockmason.io
 //Org: microservices-demo
 
-require('dotenv').config();
 const stampData = require('../stamps.json');
 const { link } = require('@blockmason/link-sdk');
+const paymentService = require('./payments-service.js');
+const CommentsService = require('./comments-service.js');
 
-
-// Ownership API
-
-// // Link Private Network API access
-// const ownershipMicroservice = link({
-//     clientId: process.env.OWN_LNK_CLIENT_ID,
-//     clientSecret: process.env.OWN_LNK_CLIENT_SECRET
-// });
-
-// GoChain Testnet API access
+// Ownership API on Link Private Network
 const ownershipMicroservice = link({
-    clientId: process.env.OWN_GC_CLIENT_ID,
-    clientSecret: process.env.OWN_GC_CLIENT_SECRET
+    clientId: 'XUz1-dyE3GOebz9AtpOcgnVL56L5JyJqGqj3sYxjVuU',
+    clientSecret: 'QGwu6A/c9WzV4Gf/uGIPNSfda6rOKkMkaJ5pHP4ccyWWy0F6YZ133VVFawet2FH'
 });
-
-// Ethereum Ropsten API access
-// const ownershipMicroservice = link({
-//     clientId: process.env.OWN_E_ROP_CLIENT_ID,
-//     clientSecret: process.env.OWN_E_ROP_CLIENT_SECRET
-// });
-
-// Payment API
-
-// Ethereum Ropsten API access
-const paymentMicroservice = link({
-    clientId: process.env.PAY_E_ROP_CLIENT_ID,
-    clientSecret: process.env.PAY_E_ROP_CLIENT_SECRET
-});
-
-// Comments API
-
-const commentsMicroservice = link({
-    clientId: process.env.COM_GC_CLIENT_ID,
-    clientSecret: process.env.COM_GC_CLIENT_SECRET
-});
-
-// const commentsMicroservice = link({
-//     clientId: process.env.COM_LNK_CLIENT_ID,
-//     clientSecret: process.env.COM_LNK_CLIENT_SECRET
-// });
 
 App = {
-    tokenConversionRate: 5,
-    messageObject: {},
+    tokenConversionRate: 1,
     
-    init: function() {
+    init: async function() {
         // Load stamps.
-        // console.log(stampData);
         const stampsRow = $('#stampsRow');
         const stampTemplate = $('#stampTemplate');
-    
+        const comments = await CommentsService.getComments();
+        // Print all comments stored on blockchain
+        console.log(comments["data"]);
+
         for (i = 0; i < stampData.length; i++) {
             stampTemplate.find('.panel-title').text(stampData[i].name);
             stampTemplate.find('img').attr('src', stampData[i].picture);
@@ -83,7 +50,7 @@ App = {
         
         if (result !== '0x0000000000000000000000000000000000000000') {
             $('.panel-stamp').eq(index).find('#ownerAddress').empty();
-            $('.panel-stamp').eq(index).find('#ownerAddress').append('Current Owner: ' + result).css({ wordWrap: "break-word" });
+            $('.panel-stamp').eq(index).find('#ownerAddress').append('Owner: ' + result).css({ wordWrap: "break-word" });
         }
     },
 
@@ -119,25 +86,7 @@ App = {
     },
 
     transferPayment: async function(receiver, amount) {
-        const reqBody = {
-            "_to": receiver,
-            "_value": web3.toHex(amount*Math.pow(10, 18))
-        };
-
-        try {
-            const result = await paymentMicroservice.post('/transfer', reqBody);
-            console.log('transfer result is', result);
-            if (result.success) {
-                return true
-            } else {
-                const message = result.errors[0]['detail'];
-                alert(message);
-                return false
-            }
-        } catch(err) {
-            console.log(err);
-            alert("Blockchain network request timed out. Please try again");
-        }
+        paymentService(receiver, amount)
     },
     
     handleOwnership: async function(event) {
@@ -152,13 +101,9 @@ App = {
             if (existingOwner !== '') {
                 existingOwner = existingOwner.split(" ")[1]
                 if (existingOwner !== newOwner) {
-                    const transferSuccess = await App.transferPayment(existingOwner, price/App.tokenConversionRate);
-                    if (transferSuccess) {
-                        App.setOwnership(event, stampId, newOwner);
-                    } else {
-                        alert("Error in transferring funds");
-                        $(event.target).text("Own").attr('disabled', false);
-                    }
+                    $(event.target).text("Own").attr('disabled', true);
+                    await App.transferPayment(existingOwner, price/App.tokenConversionRate);
+                    App.setOwnership(event, stampId, newOwner);
                 } else {
                     alert("The provided address is already the owner");
                     $(event.target).text("Own").attr('disabled', false);
@@ -169,32 +114,8 @@ App = {
             }
         }
     },
-    postComment: function(event) {
-        let textArea = $(event.target).closest("div.message-area").find("textarea");
-        let commentsRow = $(event.target).parents(".panel-stamp").find("#commentsRow");
-        let stampId = $(event.target).parents(".panel-stamp").find(".btn-own").data('id');
-        if (!App.messageObject[String(stampId)]) {
-            App.messageObject[String(stampId)] = [];
-        }
-
-        if (textArea.val() !== '') {
-            message = textArea.val();
-            const reqBody = {
-                "asset": stampId,
-                "comment": message
-            };
-            App.messageObject[String(stampId)].push(message);
-            textArea.val('');
-            commentsRow.prepend("<div class='alert alert-warning'> '" + message + "' - User 1" + "</div>");
-            await commentsMicroservice.post('/postComment', reqBody);
-        }
-        console.log('message Object is', App.messageObject);        
-    },
-    getMessages: async function(asset, index) {
-        const data = {
-            "arg0": asset,
-            "arg1": index
-        };
+    postComment: async function(event) {
+        CommentsService.postComment(event);     
     }
 };
   
