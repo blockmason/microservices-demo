@@ -2,8 +2,8 @@ const { link } = require('@blockmason/link-sdk');
 
 // Ethereum Ropsten API access
 const paymentMicroservice = link({
-    clientId: 'CEv9d4SQWm-mkxtgC-gqKacv5eTs0sqijTBITvH0e_U',
-    clientSecret: 'cc+yDLIN4wt0Ye1f9hqGBtnnvgGchDgVkCKWIE/ZNBYn1G4oFsriWI6Z0D4XLP7'
+    clientId: process.env.PAY_E_ROP_CLIENT_ID,
+    clientSecret: process.env.PAY_E_ROP_CLIENT_SECRET
 });
 
 const paymentService = async function(receiver, amount) {

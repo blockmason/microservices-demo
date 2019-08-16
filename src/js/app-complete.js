@@ -4,45 +4,34 @@
 const stampData = require('../stamps.json');
 const { link } = require('@blockmason/link-sdk');
 const paymentService = require('./payments-service.js');
+const CommentsService = require('./comments-service.js');
 
 // Ownership API
-
-// Link Private Network
 const ownershipMicroservice = link({
-    clientId: process.env.OWN_LNK_CLIENT_ID,
-    clientSecret: process.env.OWN_LNK_CLIENT_SECRET
+    clientId: process.env.OWN_GC_CLIENT_ID,
+    clientSecret: process.env.OWN_GC_CLIENT_SECRET
 });
-
-// // GoChain Testnet API access
-// const ownershipMicroservice = link({
-//     clientId: process.env.OWN_GC_CLIENT_ID,
-//     clientSecret: process.env.OWN_GC_CLIENT_SECRET
-// });
-
-// // Ethereum Ropsten API access
-// const ownershipMicroservice = link({
-//     clientId: process.env.OWN_E_ROP_CLIENT_ID,
-//     clientSecret: process.env.OWN_E_ROP_CLIENT_SECRET
-// });
 
 App = {
     tokenConversionRate: 1,
     
-    init: function() {
+    init: async function() {
         // Load stamps.
         const stampsRow = $('#stampsRow');
         const stampTemplate = $('#stampTemplate');
-    
+
         for (i = 0; i < stampData.length; i++) {
             stampTemplate.find('.panel-title').text(stampData[i].name);
             stampTemplate.find('img').attr('src', stampData[i].picture);
             stampTemplate.find('.stamp-location').text(stampData[i].location);
             stampTemplate.find('.btn-own').attr('data-id', stampData[i].id);
             stampTemplate.find('.btn-value').text(stampData[i].price * App.tokenConversionRate);
-
+            stampTemplate.find('.comments-row').attr('id', stampData[i].id );
             stampsRow.append(stampTemplate.html());
             App.markOwned(i, stampData[i].id);
         }
+        await CommentsService.getComments();
+        CommentsService.printComments();
         return App.bindEvents();
     },
 
@@ -124,6 +113,9 @@ App = {
             }
         }
     },
+    postComment: async function(event) {
+        CommentsService.postComment(event);     
+    }
 };
   
 $(function() {
