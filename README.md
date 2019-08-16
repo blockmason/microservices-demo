@@ -1,4 +1,4 @@
-# Running Multiservices App Demo
+# Running Microservices App Demo
 
 Refer to the [Link Onboarding repo](https://github.com/blockmason/link-onboarding) for help getting started. 
 
