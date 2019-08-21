@@ -4,8 +4,8 @@ const { link } = require('@blockmason/link-sdk');
 
 // Link credentials
 const project = link({
-  clientId: '',
-  clientSecret: ''
+  clientId: process.env.OWN_LNK_CLIENT_ID,
+  clientSecret: process.env.OWN_LNK_CLIENT_SECRET
 }, {
     fetch
 });

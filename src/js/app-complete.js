@@ -13,7 +13,7 @@ const ownershipMicroservice = link({
 });
 
 App = {
-    tokenConversionRate: 1,
+    tokenConversionRate: 5,
     
     init: async function() {
         // Load stamps.
