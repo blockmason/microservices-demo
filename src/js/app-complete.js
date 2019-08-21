@@ -2,15 +2,10 @@
 //Org: microservices-demo
 
 const stampData = require('../stamps.json');
-const { link } = require('@blockmason/link-sdk');
 const paymentService = require('./payments-service.js');
-const CommentsService = require('./comments-service.js');
+const commentsService = require('./comments-service.js');
+const ownershipService = require('./ownership-service.js');
 
-// Ownership API
-const ownershipMicroservice = link({
-    clientId: process.env.OWN_GC_CLIENT_ID,
-    clientSecret: process.env.OWN_GC_CLIENT_SECRET
-});
 
 App = {
     tokenConversionRate: 5,
@@ -30,8 +25,8 @@ App = {
             stampsRow.append(stampTemplate.html());
             App.markOwned(i, stampData[i].id);
         }
-        await CommentsService.getComments();
-        CommentsService.printComments();
+        await commentsService.getComments();
+        commentsService.printComments();
         return App.bindEvents();
     },
 
@@ -41,11 +36,7 @@ App = {
     },
 
     markOwned: async function(index, name) {
-        const asset = {
-          "value": name
-        };  
-
-        const { result } = await ownershipMicroservice.get('/ownerOf', asset);
+        const { result } = await ownershipService.getOwner(name);
         
         if (result !== '0x0000000000000000000000000000000000000000') {
             $('.panel-stamp').eq(index).find('#ownerAddress').empty();
@@ -54,26 +45,20 @@ App = {
     },
 
     fetchAuthority: async function() {
-        const { result } = await ownershipMicroservice.get('/authority');
+        const { result } = await ownershipService.getAuthority();
         console.log('authority is', result);
     },
 
     setOwnership: async function(event, stampId, owner) {
         event.preventDefault();
-        const reqBody = {
-            "asset": stampId,
-            "owner": owner
-        };
-
         try {
-            const response = await ownershipMicroservice.post('/setOwner', reqBody);
-          
+            const response = await ownershipService.setOwner(stampId, owner);
             if(response.errors) {
                 alert(response.errors[0].detail);
                 $(event.target).text("Own").attr('disabled', false);
             } 
             else {
-                console.log('Post request successful');
+                console.log('setOwner request successful');
                 $(event.target).text("Own").attr('disabled', false);
                 $(event.target).closest("div.owner-address").find("input[name='owner']").val('');  
                 $(event.target).parents(".panel-stamp").find("#ownerAddress").text('Owner: ' + owner);
@@ -82,10 +67,6 @@ App = {
             console.log(err);
             alert("Blockchain network request timed out. Please try again");
         }
-    },
-
-    transferPayment: async function(receiver, amount) {
-        paymentService(receiver, amount)
     },
     
     handleOwnership: async function(event) {
@@ -101,7 +82,7 @@ App = {
                 existingOwner = existingOwner.split(" ")[1]
                 if (existingOwner !== newOwner) {
                     $(event.target).text("Own").attr('disabled', true);
-                    await App.transferPayment(existingOwner, price/App.tokenConversionRate);
+                    await paymentService(existingOwner, price/App.tokenConversionRate);
                     App.setOwnership(event, stampId, newOwner);
                 } else {
                     alert("The provided address is already the owner");
@@ -113,8 +94,9 @@ App = {
             }
         }
     },
+
     postComment: async function(event) {
-        CommentsService.postComment(event);     
+        commentsService.postComment(event);     
     }
 };
   
