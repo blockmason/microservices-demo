@@ -4,8 +4,8 @@ const { link } = require('@blockmason/link-sdk');
 
 // Link credentials
 const demoService = link({
-  clientId: 'XUz1-dyE3GOebz9AtpOcgnVL56L5JyJqGqj3sYxjVuU',
-  clientSecret: 'QGwu6A/c9WzV4Gf/uGIPNSfda6rOKkMkaJ5pHP4ccyWWy0F6YZ133VVFawet2FH'
+  clientId: '3XJVIUgvdqxZxF2vPH1m_1FwNOGLXwCRgkL8ZS9-87E',
+  clientSecret: 'dCvylMkfhcxpT6gDM79SkuErYrNkIBVeDwsIyOEWl5YBpttf1/4FRZjDwpLZyQL'
 }, {
     fetch
 });
